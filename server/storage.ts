@@ -1,8 +1,9 @@
-import { users, type User, type InsertUser, type File, type InsertFile, type TestCase, type InsertTestCase, type TestPlan, type InsertTestPlan } from "@shared/schema";
+import { users, files, testCases, testPlans } from "@shared/schema";
+import { type User, type InsertUser, type File, type InsertFile, type TestCase, type InsertTestCase, type TestPlan, type InsertTestPlan } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
-// modify the interface with any CRUD methods
-// you might need
-
+// Interface for storage operations
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
@@ -26,123 +27,87 @@ export interface IStorage {
   getAllTestPlans(): Promise<TestPlan[]>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private files: Map<number, File>;
-  private testCases: Map<number, TestCase>;
-  private testPlans: Map<number, TestPlan>;
-  currentUserId: number;
-  currentFileId: number;
-  currentTestCaseId: number;
-  currentTestPlanId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.files = new Map();
-    this.testCases = new Map();
-    this.testPlans = new Map();
-    this.currentUserId = 1;
-    this.currentFileId = 1;
-    this.currentTestCaseId = 1;
-    this.currentTestPlanId = 1;
-  }
-
+// Database-backed storage implementation
+export class DatabaseStorage implements IStorage {
   // User operations
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentUserId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db.insert(users).values(insertUser).returning();
     return user;
   }
 
   // File operations
   async createFile(insertFile: InsertFile): Promise<File> {
-    const id = this.currentFileId++;
-    const now = new Date();
-    const file: File = { 
-      ...insertFile, 
-      id, 
-      uploadedAt: now 
-    };
-    this.files.set(id, file);
+    const [file] = await db.insert(files).values(insertFile).returning();
     return file;
   }
 
   async getFile(id: number): Promise<File | undefined> {
-    return this.files.get(id);
+    const [file] = await db.select().from(files).where(eq(files.id, id));
+    return file;
   }
 
   async getAllFiles(): Promise<File[]> {
-    return Array.from(this.files.values());
+    return await db.select().from(files);
   }
 
   async deleteFile(id: number): Promise<void> {
-    this.files.delete(id);
+    await db.delete(files).where(eq(files.id, id));
   }
 
   // Test case operations
   async createTestCase(insertTestCase: InsertTestCase): Promise<TestCase> {
-    const id = this.currentTestCaseId++;
-    const now = new Date();
-    const testCase: TestCase = { 
-      ...insertTestCase, 
-      id, 
-      createdAt: now,
-      selected: false
-    };
-    this.testCases.set(id, testCase);
+    const [testCase] = await db.insert(testCases).values(insertTestCase).returning();
     return testCase;
   }
 
   async getTestCase(id: number): Promise<TestCase | undefined> {
-    return this.testCases.get(id);
+    const [testCase] = await db.select().from(testCases).where(eq(testCases.id, id));
+    return testCase;
   }
 
   async getAllTestCases(): Promise<TestCase[]> {
-    return Array.from(this.testCases.values());
+    return await db.select().from(testCases);
   }
 
   async updateTestCaseSelection(id: number, selected: boolean): Promise<TestCase> {
-    const testCase = this.testCases.get(id);
-    if (!testCase) {
+    const [updatedTestCase] = await db
+      .update(testCases)
+      .set({ selected })
+      .where(eq(testCases.id, id))
+      .returning();
+    
+    if (!updatedTestCase) {
       throw new Error(`Test case with ID ${id} not found`);
     }
     
-    const updatedTestCase = { ...testCase, selected };
-    this.testCases.set(id, updatedTestCase);
     return updatedTestCase;
   }
 
   // Test plan operations
   async createTestPlan(insertTestPlan: InsertTestPlan): Promise<TestPlan> {
-    const id = this.currentTestPlanId++;
-    const now = new Date();
-    const testPlan: TestPlan = { 
-      ...insertTestPlan, 
-      id, 
-      createdAt: now 
-    };
-    this.testPlans.set(id, testPlan);
+    const [testPlan] = await db.insert(testPlans).values(insertTestPlan).returning();
     return testPlan;
   }
 
   async getTestPlan(id: number): Promise<TestPlan | undefined> {
-    return this.testPlans.get(id);
+    const [testPlan] = await db.select().from(testPlans).where(eq(testPlans.id, id));
+    return testPlan;
   }
 
   async getAllTestPlans(): Promise<TestPlan[]> {
-    return Array.from(this.testPlans.values());
+    return await db.select().from(testPlans);
   }
 }
 
-export const storage = new MemStorage();
+// Export a single instance of the database storage
+export const storage = new DatabaseStorage();
