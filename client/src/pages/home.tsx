@@ -92,7 +92,8 @@ export function Home() {
   return (
     <main className="flex-grow container mx-auto px-4 py-6">
       <div className="mb-8">
-        <h2 className="text-2xl font-medium mb-4">Test Plan Management</h2>
+        <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Test Genius</h2>
+        <p className="text-gray-600 mb-4">AI-Powered Test Case Generation</p>
         
         <div className="border-b border-gray-200">
           <nav className="flex -mb-px">
@@ -116,8 +117,11 @@ export function Home() {
       </div>
 
       <section className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h3 className="text-lg font-medium mb-4">1. Upload Files for Test Case Generation</h3>
-        <p className="text-gray-600 mb-4">Upload your specification files to generate test cases. Supported formats: PDF, DOCX, TXT, MD (Max: 10MB per file)</p>
+        <h3 className="text-xl font-semibold mb-2 flex items-center">
+          <span className="bg-blue-100 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center mr-2 text-sm">1</span>
+          Upload Files for Analysis
+        </h3>
+        <p className="text-gray-600 mb-4">Upload your specification files for Test Genius to analyze. Supported formats: PDF, DOCX, TXT, MD (Max: 10MB per file)</p>
         
         <FileUpload onUploadSuccess={handleUploadSuccess} />
 
@@ -142,23 +146,23 @@ export function Home() {
           <Button 
             onClick={handleGenerateTestCases} 
             disabled={isGenerating || uploadedFiles.length === 0}
-            className="flex items-center"
+            className="flex items-center bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-md shadow-md hover:shadow-lg transition-all"
           >
             {isGenerating ? (
               <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
                 Generating...
               </>
             ) : (
               <>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 mr-2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 mr-2">
                   <circle cx="12" cy="12" r="10" />
                   <path d="M9.9 11.5h.2c.2-.4.5-.8.9-1 .1-.1.2-.3.1-.4"/>
                   <path d="M14.9 11.5c.2.6.2 1.1 0 1.6-.1.2-.3.5-.6.7-.2.1-.3.3-.5.6-.2.3-.4.5-.6.6-.4.1-.7.2-1.2.1-.5-.1-.7-.2-.9-.4 0-.3.1-.5.2-.7.1-.2.3-.4.5-.6.4-.3.7-.6.9-1 .2-.3.2-.7 0-1"/>
                   <path d="M12 8V7"/>
                   <path d="M12 17v-1"/>
                 </svg>
-                Generate Test Cases
+                Generate Test Cases with Test Genius
               </>
             )}
           </Button>
@@ -166,12 +170,15 @@ export function Home() {
       </section>
 
       <section className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-medium mb-4">2. Generated Test Cases</h3>
+        <h3 className="text-xl font-semibold mb-2 flex items-center">
+          <span className="bg-purple-100 text-purple-800 rounded-full w-6 h-6 flex items-center justify-center mr-2 text-sm">2</span>
+          Generated Test Cases
+        </h3>
         
         {isGenerating && (
           <div className="flex flex-col items-center justify-center py-8">
             <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-            <p className="text-gray-600">Generating test cases with Google Gemini AI...</p>
+            <p className="text-gray-600">Test Genius is analyzing your files with Google Gemini AI...</p>
             <p className="text-sm text-gray-500 mt-2">This may take a minute depending on file complexity</p>
           </div>
         )}

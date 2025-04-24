@@ -1,0 +1,84 @@
+**Login API Documentation**
+
+**Endpoint:**
+```
+POST /api/v1/auth/login
+```
+
+**Description:**
+Authenticates a user by verifying their email and password. Returns an authentication token upon successful login.
+
+---
+
+**Request Headers:**
+| Key           | Value             | Required | Description                 |
+|---------------|-------------------|----------|-----------------------------|
+| Content-Type  | application/json  | Yes      | Specifies the request format |
+
+**Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "userPassword123"
+}
+```
+
+| Field    | Type   | Required | Description               |
+|----------|--------|----------|---------------------------|
+| email    | string | Yes      | The user's email address  |
+| password | string | Yes      | The user's password       |
+
+---
+
+**Success Response:**
+
+**Status Code:** `200 OK`
+
+```json
+{
+  "message": "Login successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI...",
+  "user": {
+    "id": "12345",
+    "name": "John Doe",
+    "email": "user@example.com"
+  }
+}
+```
+
+| Field   | Type   | Description                        |
+|---------|--------|------------------------------------|
+| message | string | Success message                    |
+| token   | string | JWT token for authentication       |
+| user    | object | User object with basic information |
+
+---
+
+**Error Responses:**
+
+**Status Code:** `400 Bad Request`
+```json
+{
+  "error": "Invalid email or password"
+}
+```
+
+**Status Code:** `422 Unprocessable Entity`
+```json
+{
+  "error": "Email and password are required"
+}
+```
+
+**Status Code:** `500 Internal Server Error`
+```json
+{
+  "error": "An unexpected error occurred"
+}
+```
+
+---
+
+**Notes:**
+- The token should be stored securely and used for subsequent authenticated requests in the `Authorization` header as `Bearer <token>`.
+- Ensure HTTPS is used to protect credentials during transmission.
