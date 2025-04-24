@@ -1,15 +1,17 @@
 # Test Genius
 
-Test Genius is an AI-powered test case generation and management tool designed to streamline the software testing process. It leverages advanced AI models to generate comprehensive test cases based on user-provided specifications and supports exporting test cases in CSV format for easy integration with other tools.
+## Project Idea
+Test Genius is an innovative tool designed to simplify and enhance the software testing process. By leveraging advanced AI models, it generates comprehensive test cases based on user-provided specifications. The tool also supports exporting test cases in CSV format, making it easy to integrate with other tools. Test Genius aims to save time and improve the accuracy of test case generation, making it an essential tool for developers and QA teams.
 
-## Features
-- AI-powered test case generation using Google Gemini API.
-- Export test cases to CSV in a customizable format.
-- Manage and filter test cases by type and priority.
-- Upload and analyze specification files in various formats (PDF, DOCX, TXT, MD).
-- User-friendly interface for managing test plans and reports.
+## Technologies Used
+- **Frontend**: React, TypeScript, Tailwind CSS
+- **Backend**: Node.js, Express
+- **Database**: SQLite (via Drizzle ORM)
+- **AI Integration**: Google Gemini API
+- **Build Tool**: Vite
+- **Other Tools**: PostCSS, ESLint, Prettier
 
-## Project Structure
+## Updated Project Structure
 ```
 TestGenius/
 ├── components.json
@@ -104,18 +106,7 @@ TestGenius/
 ├── shared/
 │   └── schema.ts
 └── uploads/
-    ├── files-1745480985365-147761330.txt
-    ├── files-1745482651101-172718248.txt
-    ├── files-1745483339962-283505024.txt
-    ├── files-1745484584006-524239359.txt
-    ├── files-1745484680249-751799233.txt
-    ├── files-1745484713870-303254240.txt
-    ├── files-1745484976989-829368948.txt
-    ├── files-1745485358252-823798143.txt
-    ├── files-1745490161781-654641900.txt
-    ├── files-1745490676221-285298621.txt
-    ├── files-1745491015946-455733137.txt
-    └── files-1745491268620-137706523.txt
+  
 ```
 
 ## Getting Started
