@@ -1,6 +1,32 @@
+# Ignore node_modules and build artifacts
 node_modules
 dist
+
+# Ignore system files
 .DS_Store
+
+# Ignore server public files
 server/public
+
+# Ignore Vite configuration backups
 vite.config.ts.*
+
+# Ignore compressed files
 *.tar.gz
+
+# Ignore uploaded files
+uploads/*
+
+# Ignore environment files
+.env
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore IDE-specific files
+.idea/
+.vscode/

@@ -225,7 +225,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/test-cases/export-csv', async (req: Request, res: Response) => {
     try {
       const { testCaseIds } = req.body;
-      
+
       if (!testCaseIds || !Array.isArray(testCaseIds)) {
         return res.status(400).json({ message: 'No test case IDs provided' });
       }
@@ -243,30 +243,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: 'No test cases found for the provided IDs' });
       }
 
-      // Generate CSV content
-      let csvContent = 'Test ID,Description,Prerequisites,Steps,Expected Results,Priority,Type\n';
-      
+      // Generate CSV content based on the updated format
+      let csvContent = 'ID,Work Item Type,Title,Test Step,Step Action,Step Expected\n';
+
       testCases.forEach(tc => {
-        // Format steps as a semicolon-separated string
-        const stepsStr = tc.steps.map(step => `"${step.replace(/"/g, '""')}"`).join('; ');
-        
-        // Escape fields that might contain commas
-        csvContent += [
-          tc.testId,
-          `"${tc.description.replace(/"/g, '""')}"`,
-          `"${tc.prerequisites?.replace(/"/g, '""') || ''}"`,
-          `"${stepsStr}"`,
-          `"${tc.expectedResults.replace(/"/g, '""')}"`,
-          tc.priority,
-          tc.type
-        ].join(',') + '\n';
+        tc.steps.forEach((step, index) => {
+          csvContent += [
+            '', // ID is left blank
+            'Test Case',
+            index === 0 ? tc.description : '', // Title only for the first step
+            index + 1, // Test Step
+            step, // Step Action
+            index === tc.steps.length - 1 ? tc.expectedResults : '' // Step Expected only for the last step
+          ].join(',') + '\n';
+        });
       });
 
       // Set response headers for CSV download
       res.setHeader('Content-Type', 'text/csv');
-      res.setHeader('Content-Disposition', 'attachment; filename=test_cases.csv');
-      
-      res.send(csvContent);
+      res.setHeader('Content-Disposition', 'attachment; filename="test_cases.csv"');
+
+      res.status(200).send(csvContent);
     } catch (error) {
       console.error('Error exporting test cases to CSV:', error);
       res.status(500).json({ message: 'Failed to export test cases to CSV', error: (error as Error).message });
