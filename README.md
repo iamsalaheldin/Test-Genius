@@ -1,7 +1,7 @@
-# Test Genius
+# Test Agent
 
 ## Project Idea
-Test Genius is an innovative tool designed to simplify and enhance the software testing process. By leveraging advanced AI models, it generates comprehensive test cases based on user-provided specifications. The tool also supports exporting test cases in CSV format, making it easy to integrate with other tools. Test Genius aims to save time and improve the accuracy of test case generation, making it an essential tool for developers and QA teams.
+Test Agent is an innovative tool designed to simplify and enhance the software testing process. By leveraging advanced AI models, it generates comprehensive test cases based on user-provided specifications. The tool also supports exporting test cases in CSV format, making it easy to integrate with other tools. Test Agent aims to save time and improve the accuracy of test case generation, making it an essential tool for developers and QA teams.
 
 ## Technologies Used
 - **Frontend**: React, TypeScript, Tailwind CSS
